@@ -16,6 +16,25 @@ pipeline{
             }
             
         }
+        stage('Publish to Nexus'){
+            steps{
+                nexusArtifactUploader artifacts: [
+                    [
+                        artifactId: 'simple-app', 
+                        classifier: '', 
+                        file: 'target/myweb.war', 
+                        type: 'war'
+                        ]
+                    ], 
+                    credentialsId: 'nexusCred', 
+                    groupId: 'in.javahome', 
+                    nexusUrl: '172.31.29.136', 
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http', 
+                    repository: 'simpleapp-release', 
+                    version: '3.0.0'
+            }
+        }
         stage('Deploy Dev'){
             steps{
                 sshagent(['tomcat-new']) {
