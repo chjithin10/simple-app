@@ -1,10 +1,16 @@
 pipeline{
     agent any
+     tools {
+        maven 'maven3' 
+    }
     stages{
         stage('Git Checkout'){
             steps{
                 git credentialsId: 'github', url: 'https://github.com/chjithin10/simple-app'
             }
+        }
+        stage('Maven Build'){
+            sh "mvn clean package"
         }
     }
 }
