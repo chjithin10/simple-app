@@ -18,6 +18,8 @@ pipeline{
         }
         stage('Publish to Nexus'){
             steps{
+                script{
+                    def mavenPom = readMavenPom file: 'pom.xml'
                 nexusArtifactUploader artifacts: [
                     [
                         artifactId: 'simple-app', 
@@ -32,7 +34,8 @@ pipeline{
                     nexusVersion: 'nexus3', 
                     protocol: 'http', 
                     repository: 'simpleapp-release', 
-                    version: '3.0.0'
+                    version: "${mavenPom.version}"
+                }
             }
         }
         stage('Deploy Dev'){
